@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RallyPoint - Veterans Community Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #0f1623;
+            --bg-card: #1a1f2e;
+            --bg-hover: #252b3b;
+            --accent: #4f46e5;
+            --accent-bright: #6366f1;
+            --accent-glow: rgba(99, 102, 241, 0.2);
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --border: rgba(255, 255, 255, 0.1);
+            --gold: #fbbf24;
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --military-green: #4b5320;
+            --disability-color: #ef4444;
+            --education-color: #3b82f6;
+            --perks-color: #10b981;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+            background: var(--bg-primary);
+            min-height: 100vh;
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Pages */
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Landing Page */
+        .landing-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a0033 50%, #0a0e1a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .landing-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            background-image: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 2px,
+                rgba(255, 255, 255, 0.05) 2px,
+                rgba(255, 255, 255, 0.05) 4px
+            );
+        }
+
+        .landing-content {
+            text-align: center;
+            z-index: 1;
+            max-width: 1200px;
+            padding: 2rem;
+        }
+
+        .landing-logo {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .landing-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .landing-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .landing-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-bottom: 4rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 14px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .btn-hero {
+            background: var(--gradient);
+            color: white;
+            padding: 1.2rem 2.5rem;
+            font-size: 1.2rem;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-hero:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Three Main Sections */
+        .main-sections {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .section-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .section-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .section-card.disability {
+            border-color: var(--disability-color);
+        }
+
+        .section-card.disability::before {
+            background: var(--disability-color);
+        }
+
+        .section-card.education {
+            border-color: var(--education-color);
+        }
+
+        .section-card.education::before {
+            background: var(--education-color);
+        }
+
+        .section-card.perks {
+            border-color: var(--perks-color);
+        }
+
+        .section-card.perks::before {
+            background: var(--perks-color);
+        }
+
+        .section-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .section-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-bright);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Sign Up Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 2.5rem;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-subtitle {
+            color: var(--text-secondary);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .service-verification {
+            background: var(--bg-primary);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .verification-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--gold);
+        }
+
+        .verification-note {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Main App Header */
+        .app-header {
+            background: rgba(10, 14, 26, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            font-size: 1.8rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+            background: var(--bg-card);
+        }
+
+        .nav-link.active {
+            color: var(--accent-bright);
+            background: var(--accent-glow);
+        }
+
+        .quick-jump {
+            display: flex;
+            gap: 0.5rem;
+            margin: 0 2rem;
+        }
+
+        .jump-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .jump-btn.disability {
+            background: var(--disability-color);
+        }
+
+        .jump-btn.education {
+            background: var(--education-color);
+        }
+
+        .jump-btn.perks {
+            background: var(--perks-color);
+        }
+
+        .jump-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .icon-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0.6rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+            position: relative;
+        }
+
+        .icon-btn:hover {
+            background: var(--bg-hover);
+            transform: translateY(-2px);
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            background: var(--accent-bright);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            background: var(--bg-card);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-menu:hover {
+            background: var(--bg-hover);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .user-name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        /* Main Dashboard */
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            gap: 2rem;
+        }
+
+        /* User Profile Page */
+        .profile-page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .profile-header {
+            background: var(--gradient);
+            border-radius: 24px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(100px, -100px);
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 20px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .profile-details {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-badges {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .profile-stat {
+            text-align: center;
+        }
+
+        .profile-stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .profile-stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-message {
+            background: white;
+            color: var(--accent);
+        }
+
+        .btn-follow {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Private Messaging */
+        .messages-container {
+            background: var(--bg-card);
+            border-radius: 20px;
+            height: 600px;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .conversations-list {
+            background: var(--bg-primary);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+        }
+
+        .conversation-item {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .conversation-item:hover {
+            background: var(--bg-hover);
+        }
+
+        .conversation-item.active {
+            background: var(--accent-glow);
+            border-left: 3px solid var(--accent);
+        }
+
+        .conversation-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .conversation-info {
+            flex: 1;
+        }
+
+        .conversation-name {
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .conversation-preview {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .conversation-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .unread-badge {
+            background: var(--accent);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .chat-area {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .messages-list {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .message {
+            max-width: 70%;
+            padding: 0.8rem 1.2rem;
+            border-radius: 16px;
+            position: relative;
+        }
+
+        .message.sent {
+            align-self: flex-end;
+            background: var(--gradient);
+            color: white;
+        }
+
+        .message.received {
+            align-self: flex-start;
+            background: var(--bg-primary);
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-top: 0.3rem;
+        }
+
+        .message-input-area {
+            padding: 1rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 1rem;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 0.8rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .send-btn {
+            padding: 0.8rem 1.5rem;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .send-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Topic Sections */
+        .topic-section {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        .topic-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .topic-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .topic-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .topic-icon.disability {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--disability-color);
+        }
+
+        .topic-icon.education {
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--education-color);
+        }
+
+        .topic-icon.perks {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--perks-color);
+        }
+
+        .topic-tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--bg-primary);
+            padding: 0.3rem;
+            border-radius: 12px;
+        }
+
+        .topic-tab {
+            padding: 0.6rem 1.2rem;
+            background: transparent;
+            border: none;
+            border-radius: 10px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .topic-tab.active {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .resource-card {
+            background: var(--bg-primary);
+            border-radius: 12px;
+            padding: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+        }
+
+        .resource-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .resource-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .resource-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Posts Feed */
+        .post-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 1.8rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .post-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .main-sections {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .landing-title {
+                font-size: 2.5rem;
+            }
+            
+            .header-content {
+                padding: 1rem;
+            }
+            
+            .quick-jump {
+                display: none;
+            }
+            
+            .messages-container {
+                grid-template-columns: 1fr;
+                height: 500px;
+            }
+            
+            .conversations-list {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Landing Page -->
+    <div id="landingPage" class="page active">
+        <div class="landing-page">
+            <div class="landing-bg"></div>
+            <div class="landing-content">
+                <div class="landing-logo">🎯</div>
+                <h1 class="landing-title">RallyPoint</h1>
+                <p class="landing-subtitle">The veteran community where service members connect, share knowledge, and support each other's next mission</p>
+                
+                <div class="landing-buttons">
+                    <button class="btn btn-hero" onclick="showSignUp()">
+                        <span>Join the Community</span>
+                        <span>→</span>
+                    </button>
+                    <button class="btn btn-outline" onclick="showLogin()">
+                        <span>Sign In</span>
+                    </button>
+                </div>
+
+                <div class="main-sections">
+                    <div class="section-card disability" onclick="showSignUp()">
+                        <div class="section-icon">📋</div>
+                        <h3 class="section-title">Disability & VA Claims</h3>
+                        <p class="section-description">Navigate the VA system, increase your rating, and get the benefits you've earned</p>
+                        <div class="section-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">15K+</div>
+                                <div class="stat-label">Success Stories</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">89%</div>
+                                <div class="stat-label">Win Rate</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-card education" onclick="showSignUp()">
+                        <div class="section-icon">🎓</div>
+                        <h3 class="section-title">GI Bill & Education</h3>
+                        <p class="section-description">Maximize your education benefits, find the right schools, and plan your career transition</p>
+                        <div class="section-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">500+</div>
+                                <div class="stat-label">School Reviews</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">$2.3M</div>
+                                <div class="stat-label">Benefits Used</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-card perks" onclick="showSignUp()">
+                        <div class="section-icon">💎</div>
+                        <h3 class="section-title">Perks & Benefits</h3>
+                        <p class="section-description">Discover hidden benefits, discounts, and programs available to veterans</p>
+                        <div class="section-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">200+</div>
+                                <div class="stat-label">Verified Perks</div>
+                            </div>
+                            <div class="stat
